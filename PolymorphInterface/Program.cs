@@ -1,45 +1,54 @@
-﻿namespace PolymorphInterface
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace PolymorphInterface
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Animal myAnimal = new Animal();
-            myAnimal.MakeSound();
-            myAnimal.AnimalMethod();
-
-            Animal myAnimalCat = new Cat();
-            myAnimalCat.MakeSound();
-            myAnimalCat.AnimalMethod();
-
-            Cat myCat = new Cat();
-            myCat.CatMethod();
-        }
-    }
-
-    class Animal
-    {
-        public virtual void MakeSound()
-        {
-            Console.WriteLine("Animal Sound!");
+            PrivatKund newPrivatKund = new PrivatKund(123456789, 1000m, "Privat");
+            newPrivatKund.SkickaArsrapport();
         }
 
-        public void AnimalMethod()
+        class Kund
         {
-            Console.WriteLine("Animals Only!");
-        }
-    }
+            protected int Kortnummer { get; set; }
+            protected decimal Saldo { get; set; }
+            protected string KundTyp { get; set; }
 
-    class Cat : Animal
-    {
-        public override void MakeSound()
-        {
-            Console.WriteLine("Animal Sound!");
+            public Kund(int kortnummer, decimal saldo, string kundTyp)
+            {
+                Kortnummer = kortnummer;
+                Saldo = saldo;
+                KundTyp = kundTyp;
+            }
+
+            public void SkickaArsrapport()
+            {
+                Console.WriteLine(
+                    $"Skickar årsrapport för: {KundTyp}\n" +
+                    $"Kontonummer: {Kortnummer}\n" +
+                    $"Saldo: {Saldo} SEK"
+                );
+            }
         }
 
-        public void CatMethod()
+        class PrivatKund : Kund
         {
-            Console.WriteLine("Cats Only!");
+            public PrivatKund(int kortnummer, decimal saldo, string kundTyp)
+                : base(kortnummer, saldo, kundTyp)
+            {
+
+            }
+        }
+
+        class ForetagsKund : Kund
+        {
+            public ForetagsKund(int kortnummer, decimal saldo, string kundTyp)
+                : base(kortnummer, saldo, kundTyp)
+            {
+
+            }
         }
     }
 }
